@@ -786,6 +786,11 @@ bool read_config(FILE *file, struct sway_config *config,
 		line_number += nlines;
 		sway_log(SWAY_DEBUG, "Read line %d: %s", line_number, line);
 
+		if (strlen(line) >= 2 && line[0] == '#' && line[1] == '~') {
+			memmove(line, &line[2], strlen(line) - 2);
+			memset(&line[strlen(line) - 2], '\0', 2);
+		}
+
 		strip_whitespace(line);
 		if (!*line || line[0] == '#') {
 			continue;
